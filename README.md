@@ -1,6 +1,8 @@
-# Financeiro
+# Blockchain Financeiro
 
-FIXME
+The product to be developed in this project must be an API (Application
+Programming Interface) to record, in a blockchain, the transactions of the management manager
+personal finances
 
 ## Prerequisites
 

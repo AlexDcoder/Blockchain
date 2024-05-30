@@ -8,7 +8,8 @@
                  [cheshire "5.8.1"]
                  [ring/ring-defaults "0.3.2"]
                  [ring/ring-json "0.4.0"]
-                 [clj-http "3.9.1"]]
+                 [clj-http "3.9.1"]
+                 [selmer "1.12.38"]]
   :plugins [[lein-ring "0.12.5"]]
   :ring {:handler financeiro.handler/app}
   :profiles
@@ -19,4 +20,5 @@
                         [ring/ring-jetty-adapter "1.7.1"]]
          :plugins [[lein-midje "3.2.1"]
                    [lein-cloverage "1.0.13"]]}}
+  :resource-paths ["resources"]
   :test-paths ["test/unitarios" "test/aceitacao"])

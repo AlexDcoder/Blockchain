@@ -34,7 +34,7 @@
                (:body response) => "{\"saldo\":0}")))
 
 (facts "Registra uma receita no valor de 10"
-       (against-background (db/registrar {:valor 10
+       (against-background (db/cadastrar {:valor 10
                                           :tipo "receita"})) => {:id 1 :valor 10 :tipo "receita"}
 
        (let [response (app (-> (mock/request :post "/transacoes")

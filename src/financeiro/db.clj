@@ -18,7 +18,7 @@
 (defn saldo []
   (reduce calcular 0 @registros))
 
-(defn registrar [transacao]
+(defn cadastrar [transacao]
   (let [colecao-atualizada (swap! registros conj transacao)]
     (merge transacao {:id (count colecao-atualizada)})))
 

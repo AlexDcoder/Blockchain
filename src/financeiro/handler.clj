@@ -3,6 +3,7 @@
             [clojure.java.io :as io]
             [compojure.core :refer :all]
             [compojure.route :as route]
+            [blockhain.blockchain :as blockchain]
             [financeiro.db :as db]
             [financeiro.transacoes :as transacoes]
             [ring.middleware.defaults :refer [api-defaults wrap-defaults]]
@@ -23,16 +24,27 @@
 (defroutes app-routes
   (GET "/" [] (renderizar-template "index" "Índice"))
   (GET "/saldo" [] (como-json {:saldo (db/saldo)}))
-  (POST "/transacoes" requisicao
+
+  (POST "/transacoes"
+    requisicao
     (if (transacoes/valida? (:body requisicao))
       (-> (db/cadastrar (:body requisicao))
           (como-json 201))
-
       (como-json {:mensagem "Requisição inválida"} 422)))
+  
   (GET "/transacoes" {filtros :params} (como-json {:transacoes (if (empty? filtros) (db/transacoes) (db/transacoes-com-filtro filtros))}))
+
   (GET "/receitas" [] como-json {:transacoes (db/transacoes-do-tipo "receita")})
   (GET "/despesas" [] como-json {:transacoes (db/transacoes-do-tipo "despesa")})
-  (route/not-found "Recurso não encontrado"))
+  
+  (GET "/blockchain" [] (como-json :blockchain (blockchain/registros_blockchain)))
+  
+  (POST "registro_blockchain" requisicao (if (transacoes/valida? (:body requisicao))
+                                           (-> (blockchain/registrar (:body requisicao))
+                                               (como-json 201))
+                                           
+  (route/not-found "Recurso não encontrado"))))
 
 (def app
-  (-> (wrap-defaults app-routes api-defaults) (wrap-json-body {:keywords? true :bigdecimals? true})))
+  (-> (wrap-defaults app-routes api-defaults) 
+      (wrap-json-body {:keywords? true :bigdecimals? true})))

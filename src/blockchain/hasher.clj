@@ -4,7 +4,7 @@
   (let [digest (.digest (MessageDigest/getInstance "SHA-256") (.getBytes string "UTF-8"))]
     (apply str (map (partial format "%02x") digest))))
 
-(defn achar-nounce
+(defn achar-nounce 
   ([id dados anterior] (achar-nounce id 0 dados anterior))
   ([id nonce dados anterior]
    (if

@@ -22,22 +22,44 @@
    :body (json/generate-string conteudo)})
 
 (defroutes app-routes
-  (GET "/" [] (renderizar-template "index" "Índice"))
-  (GET "/saldo" [] (como-json {:saldo (db/saldo)}))
+  ;; Operações da parte financeira
+  (GET "/" ;; Página inicial
+    [] 
+    (renderizar-template "index" "Índice"))
+  
+  (GET "/saldo" ;; Mostrar saldo atual
+    [] 
+    (como-json {:saldo (db/saldo)}))
 
-  (POST "/transacoes"
+  (POST "/transacoes" ;; Realizar Transação
     requisicao
     (if (transacoes/valida? (:body requisicao))
       (-> (db/cadastrar (:body requisicao))
           (como-json 201))
       (como-json {:mensagem "Requisição inválida"} 422)))
 
-  (GET "/transacoes" {filtros :params} (como-json {:transacoes (if (empty? filtros) (db/transacoes) (db/transacoes-com-filtro filtros))}))
+  (GET "/transacoes" ;; Mostrar todas as transações com filtro ou não
+    {filtros :params}
+    (como-json {:transacoes (if (empty? filtros) (db/transacoes) (db/transacoes-com-filtro filtros))}))
+  
+  (GET "/receitas" ;;Mostrar transações que são somente do tipo RECEITA
+    [] 
+    como-json {:transacoes (db/transacoes-do-tipo "receita")})
+  
+  (GET "/despesas" ;;Mostrar transações que são somente do tipo DESPESA
+    [] 
+    como-json {:transacoes (db/transacoes-do-tipo "despesa")})
 
-  (GET "/receitas" [] como-json {:transacoes (db/transacoes-do-tipo "receita")})
-  (GET "/despesas" [] como-json {:transacoes (db/transacoes-do-tipo "despesa")})
-
-  (GET "/blockchain" [] (como-json {:blockchain (blockchain/registros_blockchain)})))
+  ;; Operações da parte blockchain
+  (GET "/blockchain" ;; Mostrar a blockchain de transações
+    [] 
+    (como-json {:blockchain (blockchain/registros_blockchain)}))
+  
+  (POST "/blockchain"  ;;Registrar transação na blockchain
+    requisicao 
+    (if (transacoes/valida? (:body requisicao))
+      (-> (blockchain/registrar {:body requisicao}) (como-json 201))
+      (como-json {:mensagem "Requisição inválida"} 422))))
 
 (def app
   (-> (wrap-defaults app-routes api-defaults)

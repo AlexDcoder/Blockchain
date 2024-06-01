@@ -1,8 +1,8 @@
-# Blockchain Financeiro
+# Caçacoin
 
 The product to be developed in this project must be an API (Application
 Programming Interface) to record, in a blockchain, the transactions of the management manager
-personal finances
+personal finances.
 
 ## Prerequisites
 

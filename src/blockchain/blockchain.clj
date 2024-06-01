@@ -10,4 +10,5 @@
 
 (defn registrar [transacao]
   (let [blockchain-atualizada (swap! blockchain conj transacao)]
-    (merge transacao {:id (count blockchain-atualizada)})))
+    (merge transacao {:id (count blockchain-atualizada)
+                      :nonce (b-hash/achar-nounce transacao)})))

@@ -21,7 +21,7 @@
 
                            (fact "Não existem transacoes" :aceitacao (json/parse-string (conteudo "/transacoes") true) => {:transacoes '()})
 
-                           (against-background [(before :facts (doseq [transacao transacoes-aleatorias] (db/cadastrar transacao)))
+                           (against-background [(before :facts (doseq [transacao transacoes-aleatorias] (db/registrar transacao)))
                                                 (after :facts (db/limpar))])
 
                            (fact "Existem 3 despesas" :aceitacao

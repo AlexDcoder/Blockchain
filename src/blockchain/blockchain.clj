@@ -3,12 +3,11 @@
 
 (def blockchain (atom []))
 
-(def registros_blockchain @blockchain)
+(defn registros_blockchain [] @blockchain)
 
 (defn limpar []
   (reset! blockchain []))
 
 (defn registrar [transacao]
-  (let [blockchain-atualizada (swap! registros_blockchain conj transacao)]
-    (merge transacao {:id (count blockchain-atualizada)})
-    ))
+  (let [blockchain-atualizada (swap! blockchain conj transacao)]
+    (merge transacao {:id (count blockchain-atualizada)})))

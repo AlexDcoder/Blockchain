@@ -53,7 +53,7 @@
   ;; Operações da parte blockchain
   (GET "/blockchain" ;; Mostrar a blockchain de transações
     [] 
-    (como-json {:blockchain (blockchain/registros_blockchain)}))
+    (como-json {:blockchain (blockchain/registros-blockchain)}))
   
   (POST "/blockchain"  ;;Registrar transação na blockchain
     requisicao 

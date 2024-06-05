@@ -1,7 +1,7 @@
 (ns financeiro.handler
   (:require [cheshire.core :as json]
             [clojure.java.io :as io]
-            [compojure.core :refer :all]
+            [compojure.core :refer [GET defroutes POST]]
             [compojure.route :as route]
             [blockchain.blockchain :as blockchain]
             [financeiro.db :as db]
@@ -57,7 +57,10 @@
 
   (POST "/blockchain" ;; Fazer backup das transações até o momento
     requisicao
-    (blockchain/registrar (:body (como-json (db/transacoes))))))
+    (if (transacoes/valida? (:body requisicao))
+      (-> (blockchain/registrar (:body requisicao))
+          (como-json 201))
+      (como-json {:mensagem "Requisição inválida"} 422))))
 
 (def app
   (-> (wrap-defaults app-routes api-defaults)

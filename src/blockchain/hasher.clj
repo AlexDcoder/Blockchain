@@ -12,5 +12,5 @@
      nonce
      (recur id (inc nonce) dados anterior))))
 
-(defn hash_proprio [id nonce dados anterior]
+(defn hash-proprio [id nonce dados anterior]
   (sha256 (str id nonce dados anterior)))

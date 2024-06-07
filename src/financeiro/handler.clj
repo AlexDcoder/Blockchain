@@ -53,11 +53,11 @@
   ;; Operações da parte blockchain
   (GET "/blockchain" ;; Mostrar a blockchain de transações
     []
-    (como-json {:blockchain (blockchain/registros-blockchain)}))
+    (como-json {:blockchain (blockchain/blocos-blockchain)}))
 
   (POST "/blockchain" ;; Fazer backup das transações até o momento
     requisicao
-    (if (transacoes/valida? (:body requisicao))
+    (if (blockchain/valido? (:body requisicao))
       (-> (blockchain/registrar (:body requisicao))
           (como-json 201))
       (como-json {:mensagem "Requisição inválida"} 422))))

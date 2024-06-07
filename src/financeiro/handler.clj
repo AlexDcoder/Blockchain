@@ -1,7 +1,7 @@
 (ns financeiro.handler
   (:require [cheshire.core :as json]
             [clojure.java.io :as io]
-            [compojure.core :refer [GET defroutes POST]]
+            [compojure.core :refer :all]
             [compojure.route :as route]
             [blockchain.blockchain :as blockchain]
             [financeiro.db :as db]

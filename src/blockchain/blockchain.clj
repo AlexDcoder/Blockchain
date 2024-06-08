@@ -14,7 +14,10 @@
   (if (nil? bloco) true (valida? bloco)))
 
 (defn registrar [bloco]
-  (let [colecao-atualizada (swap! blockchain-financeira conj (db/transacoes))
+  (let [colecao-atualizada (if (nil? bloco)
+                             (swap! blockchain-financeira conj (db/transacoes))
+                             (do (swap! db/registros conj bloco)
+                                 (swap! blockchain-financeira conj (db/transacoes))))
         hash-genesis (format "%064d" 0)
         tamanho-atual (count colecao-atualizada)
         hash-anterior (cond (= tamanho-atual 1)
@@ -23,12 +26,22 @@
         nonce (hasher/minerar tamanho-atual
                               (db/transacoes)
                               hash-anterior)]
+    (println (db/transacoes))
     (swap! informacoes-bloco conj
-           (merge bloco {:id tamanho-atual
-                         :dados (db/transacoes)
-                         :nonce  nonce
-                         :anterior hash-anterior
-                         :atual  (hasher/hash_proprio tamanho-atual
-                                                      nonce
-                                                      (db/transacoes)
-                                                      hash-anterior)}))))
+           (if (nil? bloco)
+             (merge bloco {:id tamanho-atual
+                           :dados (db/transacoes)
+                           :nonce  nonce
+                           :anterior hash-anterior
+                           :atual  (hasher/hash_proprio tamanho-atual
+                                                        nonce
+                                                        (db/transacoes)
+                                                        hash-anterior)})
+             {:id tamanho-atual
+              :dados (db/transacoes)
+              :nonce  nonce
+              :anterior hash-anterior
+              :atual  (hasher/hash_proprio tamanho-atual
+                                           nonce
+                                           (db/transacoes)
+                                           hash-anterior)}))))

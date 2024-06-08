@@ -57,6 +57,7 @@
 
   (POST "/blockchain" ;; Fazer backup das transações até o momento
     requisicao
+    (println (:body requisicao))
     (if (blockchain/valido? (:body requisicao))
       (-> (blockchain/registrar (:body requisicao))
           (como-json 201))

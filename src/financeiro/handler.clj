@@ -33,10 +33,13 @@
 
   (POST "/transacoes" ;; Realizar Transação
     requisicao
-    (if (transacoes/valida? (:body requisicao))
-      (-> (db/cadastrar (:body requisicao))
-          (como-json 201))
-      (como-json {:mensagem "Requisição inválida"} 422)))
+    (println (:params requisicao))
+    (let [transferencia {:valor (Integer/parseInt (:valor (:params requisicao)))
+                         :tipo (:tipo (:params requisicao))}]
+      (if (transacoes/valida? transferencia)
+        (-> (db/cadastrar transferencia)
+            (como-json 201))
+        (como-json {:mensagem "Requisição inválida"} 422))))
 
   (GET "/transacoes" ;; Mostrar todas as transações com filtro ou não
     {filtros :params}
@@ -57,12 +60,18 @@
 
   (POST "/blockchain" ;; Fazer backup das transações até o momento
     requisicao
-    (println (:body requisicao))
-    (if (blockchain/valido? (:body requisicao))
-      (-> (blockchain/registrar (:body requisicao))
-          (como-json 201))
-      (como-json {:mensagem "Requisição inválida"} 422))))
+    (let [bloco (if (and (= "" (:valor (:params requisicao)))
+                         (= "" (:tipo (:params requisicao))))
+                  nil
+                  {:valor (Integer/parseInt (:valor (:params requisicao)))
+                   :tipo (:tipo (:params requisicao))})]
+      (if (blockchain/valido? bloco)
+        (-> (blockchain/registrar bloco)
+            (como-json 201))
+        (como-json {:mensagem "Requisição inválida"} 422)))))
 
 (def app
-  (-> (wrap-defaults app-routes api-defaults)
-      (wrap-json-body {:keywords? true :bigdecimals? true})))
+  (-> app-routes
+      (wrap-json-body {:keywords? true :bigdecimals? true})
+      (wrap-defaults api-defaults)))
+

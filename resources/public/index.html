@@ -20,20 +20,20 @@
                 <div class="card-body p-5">
                     <h4 class="card-title">Cadastro Financeiro</h4>
                     <p class="card-text">Cadastre suas transações nos campos abaixo</p>
-                    <form style="margin-top: 15px;" action="/transacoes" method="post">
+                    <form id="transacoes_form" style="margin-top: 15px;" action="/transacoes" method="post">
                         <div class="mb-3 row">
                             <label class="col-4 col-form-label">Valor da Transação</label>
                             <div class="col-12">
-                                <input type="number" class="form-control" placeholder="Digite o valor da transação" />
+                                <input name="valor" type="number" class="form-control" placeholder="Digite o valor da transação" />
                             </div>
 
                             <label class="col-4 col-form-label">Tipo da Transação</label>
                             <div class="col-12">
-                                <input type="text" class="form-control" placeholder="Digite o tipo da transação" />
+                                <input name="tipo" type="text" class="form-control" placeholder="Digite o tipo da transação" />
                             </div>
                         </div>
                         <div class="mb-3 row mt-4">
-                            <button type="submit" class="btn btn-primary">
+                            <button  type="submit" class="btn btn-primary">
                                 Cadastrar Transação
                             </button>
                         </div>
@@ -65,12 +65,12 @@
 
                             <label class="col-4 col-form-label">Valor da Transação</label>
                             <div class="col-12">
-                                <input type="number" class="form-control" placeholder="Digite o valor da transação" />
+                                <input name="valor" type="number" class="form-control" placeholder="Digite o valor da transação" />
                             </div>
 
                             <label class="col-4 col-form-label">Tipo da Transação</label>
                             <div class="col-12">
-                                <input type="text" class="form-control" placeholder="Digite o tipo da transação" />
+                                <input name="tipo" type="text" class="form-control" placeholder="Digite o tipo da transação" />
                             </div>
                         </div>
                         <div class="mb-3 row mt-4">
@@ -95,6 +95,7 @@
     <footer>
         <!-- place footer here -->
     </footer>
+
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

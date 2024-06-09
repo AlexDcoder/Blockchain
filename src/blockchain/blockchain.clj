@@ -26,6 +26,7 @@
         nonce (hasher/minerar tamanho-atual
                               (db/transacoes)
                               hash-anterior)]
+    (println "TO AQUI")
     (println (db/transacoes))
     (swap! informacoes-bloco conj
            (if (nil? bloco)
